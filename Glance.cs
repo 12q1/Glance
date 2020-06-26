@@ -28,10 +28,16 @@ public static string GenerateCell(itemObject input, bool rightMost)
     int maxWidth = 33;
     string result = "";
     string splitName = SplitCamelCase(input.Name);
-    if(input.Name == "NATO")
+    if(input.Name.Contains("NATO"))
     {
-        splitName = "NATO Ammo";
-        //weird edge case
+        if(input.Name.Contains("5p"))
+        {
+            splitName = "NATO 56x45mm";
+        }
+        else
+        {
+            splitName = "NATO 25x184mm";
+        }
     }
     int nameLength = splitName.Length;
     if(input.Type == "Ship")
@@ -341,6 +347,11 @@ public void Main(string argument, UpdateType updateSource)
                         itemQuantity = float.Parse(item.Amount.ToString());
                         //otherwise we just parse the number from the string
                         //removing this check causes non-ingot items to appear as 0
+                    }
+                    if (typeString.Contains("NATO"))
+                    {
+                        itemName = splitString[2] + splitString[3];
+                        //console.WriteText(itemName + "\n", true);
                     }
 
                     allItems.Add(new itemObject(itemName, itemType, itemQuantity));
